@@ -1,6 +1,6 @@
 # d3-chord
 
-Visualize relationships and network flow with an aesthetically-pleasing circular layout.
+Visualize relationships or network flow with an aesthetically-pleasing circular layout.
 
 ## Installing
 

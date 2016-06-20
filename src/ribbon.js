@@ -1,4 +1,7 @@
+import {slice} from "./array";
 import constant from "./constant";
+import {cos, sin} from "./math";
+import {path} from "d3-path";
 
 var pi = Math.PI,
     halfPi = pi / 2;
@@ -23,49 +26,40 @@ function defaultEndAngle(d) {
   return d.endAngle;
 }
 
-function equals(a, b) {
-  return a.a0 === b.a0 && a.a1 === b.a1;
-}
-
-function arc(r, p, a) {
-  return "A" + r + "," + r + " 0 " + +(a > pi) + ",1 " + p;
-}
-
-function curve(r0, p0, r1, p1) {
-  return "Q 0,0 " + p1;
-}
-
 export default function() {
   var source = defaultSource,
       target = defaultTarget,
       radius = defaultRadius,
       startAngle = defaultStartAngle,
-      endAngle = defaultEndAngle;
+      endAngle = defaultEndAngle,
+      context = null;
 
-  function ribbon(d, i) {
-    var s = subgroup(this, source, d, i),
-        t = subgroup(this, target, d, i);
-    return "M" + s.p0
-      + arc(s.r, s.p1, s.a1 - s.a0) + (equals(s, t)
-      ? curve(s.r, s.p1, s.r, s.p0)
-      : curve(s.r, s.p1, t.r, t.p0)
-      + arc(t.r, t.p1, t.a1 - t.a0)
-      + curve(t.r, t.p1, s.r, s.p0))
-      + "Z";
-  }
+  function ribbon() {
+    var buffer,
+        argv = slice.call(arguments),
+        s = source.apply(this, argv),
+        t = target.apply(this, argv),
+        sr = +radius.apply(this, (argv[0] = s, argv)),
+        sa0 = startAngle.apply(this, argv) - halfPi,
+        sa1 = endAngle.apply(this, argv) - halfPi,
+        sx0 = sr * cos(sa0),
+        sy0 = sr * sin(sa0),
+        tr = +radius.apply(this, (argv[0] = t, argv)),
+        ta0 = startAngle.apply(this, argv) - halfPi,
+        ta1 = endAngle.apply(this, argv) - halfPi;
 
-  function subgroup(that, object, d, i) {
-    var subgroup = object.call(that, d, i),
-        r = +radius.call(that, subgroup, i),
-        a0 = startAngle.call(that, subgroup, i) - halfPi,
-        a1 = endAngle.call(that, subgroup, i) - halfPi;
-    return {
-      r: r,
-      a0: a0,
-      a1: a1,
-      p0: [r * Math.cos(a0), r * Math.sin(a0)],
-      p1: [r * Math.cos(a1), r * Math.sin(a1)]
-    };
+    if (!context) context = buffer = path();
+
+    context.moveTo(sx0, sy0);
+    context.arc(0, 0, sr, sa0, sa1);
+    if (sa0 !== ta0 || sa1 !== ta1) { // TODO sr !== tr?
+      context.quadraticCurveTo(0, 0, tr * cos(ta0), tr * sin(ta0));
+      context.arc(0, 0, tr, ta0, ta1);
+    }
+    context.quadraticCurveTo(0, 0, sx0, sy0);
+    context.closePath();
+
+    if (buffer) return context = null, buffer + "" || null;
   }
 
   ribbon.radius = function(_) {
@@ -86,6 +80,10 @@ export default function() {
 
   ribbon.target = function(_) {
     return arguments.length ? (target = _, ribbon) : target;
+  };
+
+  ribbon.context = function(_) {
+    return arguments.length ? ((context = _ == null ? null : _), ribbon) : context;
   };
 
   return ribbon;

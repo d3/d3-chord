@@ -1,7 +1,7 @@
 var tape = require("tape"),
-    d3_chord = require("../");
+    d3 = require("../");
 
 tape("d3.ribbon()", function(test) {
-  test.ok(d3_chord.ribbon());
+  test.ok(d3.ribbon());
   test.end();
 });

@@ -1,10 +1,7 @@
 import {slice} from "./array";
 import constant from "./constant";
-import {cos, sin} from "./math";
+import {cos, halfPi, sin} from "./math";
 import {path} from "d3-path";
-
-var pi = Math.PI,
-    halfPi = pi / 2;
 
 function defaultSource(d) {
   return d.source;

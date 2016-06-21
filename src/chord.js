@@ -1,4 +1,5 @@
 import {range} from "d3-array";
+import {max, tau} from "./math";
 
 function compareValue(compare) {
   return function(a, b) {
@@ -11,9 +12,9 @@ function compareValue(compare) {
 
 export default function() {
   var padAngle = 0,
-      sortGroups,
-      sortSubgroups,
-      sortChords;
+      sortGroups = null,
+      sortSubgroups = null,
+      sortChords = null;
 
   function chord(matrix) {
     var n = matrix.length,
@@ -55,8 +56,8 @@ export default function() {
     // Convert the sum to scaling factor for [0, 2pi].
     // TODO Allow start and end angle to be specified?
     // TODO Allow padding to be specified as percentage?
-    k = Math.max(0, 2 * Math.PI - padAngle * n) / k;
-    dx = k ? padAngle : 2 * Math.PI / n;
+    k = max(0, tau - padAngle * n) / k;
+    dx = k ? padAngle : tau / n;
 
     // Compute the start and end angle for each group and subgroup.
     // Note: Opera has a bug reordering object literal properties!
@@ -101,7 +102,7 @@ export default function() {
   }
 
   chord.padAngle = function(_) {
-    return arguments.length ? (padAngle = Math.max(0, _), chord) : padAngle;
+    return arguments.length ? (padAngle = max(0, _), chord) : padAngle;
   };
 
   chord.sortGroups = function(_) {

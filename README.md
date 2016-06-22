@@ -42,7 +42,7 @@ var matrix = [
 
 The number *matrix*[*i*][*j*] represents to the amount of flow from the *i*th element to the *j*th element; the number *matrix*[*j*][*i*] represents the reverse flow from the *j*th element to the *i*th element.
 
-The return value is an array of chords, where each chord is an object with the following properties:
+The returned layout is an array of chords, where each chord is an object with the following properties:
 
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians
@@ -52,7 +52,7 @@ The return value is an array of chords, where each chord is an object with the f
 
 The chords are typically passed to [d3.ribbon](#ribbon) to display the asymmetric flow between elements.
 
-The returned array defines a second array, *chords*.groups, where each group is an object with the following properties:
+The returned *chords* array also defines a second array, *chords*.groups, where each group is an object with the following properties:
 
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians

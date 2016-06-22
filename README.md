@@ -25,7 +25,7 @@ var chord = d3.chord();
 
 <a href="#chord" name="chord">#</a> d3.<b>chord</b>()
 
-Constructs a new chord layout.
+Constructs a new chord layout with the default settings.
 
 <a href="#_chord" name="_chord">#</a> <i>chord</i>(<i>matrix</i>)
 
@@ -82,15 +82,38 @@ If *compare* is specified, sets the chord comparator to the specified function o
 
 <a href="#ribbon" name="ribbon">#</a> d3.<b>ribbon</b>()
 
-…
+Creates a new ribbon generator with the default settings.
 
 <a href="#_ribbon" name="_ribbon">#</a> <i>ribbon</i>(<i>arguments…</i>)
 
-…
+Generates a ribbon for the given *arguments*. The *arguments* are arbitrary; they are simply propagated to the ribbon generator’s accessor functions along with the `this` object. For example, with the default settings, a [chord object](#_chord) expected:
+
+```js
+var ribbon = d3.ribbon();
+
+ribbon({
+  source: {startAngle: 0.7524114, endAngle: 1.1212972, radius: 240},
+  target: {startAngle: 1.8617078, endAngle: 1.9842927, radius: 240}
+}); // "M164.0162810494058,-175.21032946354026A240,240,0,0,1,216.1595644740915,-104.28347273835429Q0,0,229.9158815306728,68.8381247563705A240,240,0,0,1,219.77316791012538,96.43523560788266Q0,0,164.0162810494058,-175.21032946354026Z"
+```
+
+Or equivalently if the radius is instead defined as a constant:
+
+```js
+var ribbon = d3.ribbon()
+    .radius(240);
+
+ribbon({
+  source: {startAngle: 0.7524114, endAngle: 1.1212972},
+  target: {startAngle: 1.8617078, endAngle: 1.9842927}
+}); // "M164.0162810494058,-175.21032946354026A240,240,0,0,1,216.1595644740915,-104.28347273835429Q0,0,229.9158815306728,68.8381247563705A240,240,0,0,1,219.77316791012538,96.43523560788266Q0,0,164.0162810494058,-175.21032946354026Z"
+```
+
+If the ribbon generator has a context, then the ribbon is rendered to this context as a sequence of path method calls and this function returns void. Otherwise, a path data string is returned.
 
 <a href="#ribbon_source" name="ribbon_source">#</a> <i>ribbon</i>.<b>source</b>([<i>source</i>])
 
-…
+If *source* is specified, sets the source accessor to the specified function and returns this ribbon generator. If *source* is not specified, returns the current source accessor, which defaults to:
 
 ```js
 function source(d) {
@@ -100,7 +123,7 @@ function source(d) {
 
 <a href="#ribbon_target" name="ribbon_target">#</a> <i>ribbon</i>.<b>target</b>([<i>target</i>])
 
-…
+If *target* is specified, sets the target accessor to the specified function and returns this ribbon generator. If *target* is not specified, returns the current target accessor, which defaults to:
 
 ```js
 function target(d) {
@@ -110,7 +133,7 @@ function target(d) {
 
 <a href="#ribbon_radius" name="ribbon_radius">#</a> <i>ribbon</i>.<b>radius</b>([<i>radius</i>])
 
-…
+If *radius* is specified, sets the radius accessor to the specified function and returns this ribbon generator. If *radius* is not specified, returns the current radius accessor, which defaults to:
 
 ```js
 function radius(d) {
@@ -118,9 +141,9 @@ function radius(d) {
 }
 ```
 
-<a href="#ribbon_startAngle" name="ribbon_startAngle">#</a> <i>ribbon</i>.<b>startAngle</b>([<i>startAngle</i>])
+<a href="#ribbon_startAngle" name="ribbon_startAngle">#</a> <i>ribbon</i>.<b>startAngle</b>([<i>angle</i>])
 
-…
+If *angle* is specified, sets the start angle accessor to the specified function and returns this ribbon generator. If *angle* is not specified, returns the current start angle accessor, which defaults to:
 
 ```js
 function startAngle(d) {
@@ -128,9 +151,11 @@ function startAngle(d) {
 }
 ```
 
-<a href="#ribbon_endAngle" name="ribbon_endAngle">#</a> <i>ribbon</i>.<b>endAngle</b>([<i>endAngle</i>])
+The *angle* is specified in radians, with 0 at -*y* (12 o’clock) and positive angles proceeding clockwise.
 
-…
+<a href="#ribbon_endAngle" name="ribbon_endAngle">#</a> <i>ribbon</i>.<b>endAngle</b>([<i>angle</i>])
+
+If *angle* is specified, sets the end angle accessor to the specified function and returns this ribbon generator. If *angle* is not specified, returns the current end angle accessor, which defaults to:
 
 ```js
 function endAngle(d) {
@@ -138,6 +163,8 @@ function endAngle(d) {
 }
 ```
 
+The *angle* is specified in radians, with 0 at -*y* (12 o’clock) and positive angles proceeding clockwise.
+
 <a href="#ribbon_context" name="ribbon_context">#</a> <i>ribbon</i>.<b>context</b>([<i>context</i>])
 
-… See [d3-path](https://github.com/d3/d3-path).
+If *context* is specified, sets the context and returns this ribbon generator. If *context* is not specified, returns the current context, which defaults to null. If the context is not null, then the [generated ribbon](#_ribbon) is rendered to this context as a sequence of [path method](http://www.w3.org/TR/2dcontext/#canvaspathmethods) calls. Otherwise, a [path data](http://www.w3.org/TR/SVG/paths.html#PathData) string representing the generated ribbon is returned. See also [d3-path](https://github.com/d3/d3-path).

@@ -52,7 +52,7 @@ The return value of *chord*(*matrix*) is an array of *chords*, where each chord 
 
 The chords are typically passed to [d3.ribbon](#ribbon) to display the asymmetric flow between elements.
 
-The returned *chords* array also defines a second array, *chords*.groups, where each group is an object with the following properties:
+The *chords* array defines a second array, *chords*.groups, where each group is an object with the following properties:
 
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians

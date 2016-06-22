@@ -29,7 +29,7 @@ Constructs a new chord layout.
 
 <a href="#_chord" name="_chord">#</a> <i>chord</i>(<i>matrix</i>)
 
-Computes the chord layout for the specified square *matrix* of size *n*×*n*. In other words, the given *matrix* must be an array of length *n* where each element *matrix*[*i*] is an array of *n* numbers. From the [Circos tableviewer example](http://mkweb.bcgsc.ca/circos/guide/tables/):
+Computes the chord layout for the specified square *matrix* of size *n*×*n*, where the *matrix* represents the directed flow amongst a network (a complete digraph) of *n* nodes. The given *matrix* must be an array of length *n*, where each element *matrix*[*i*] is an array of *n* numbers, where each *matrix*[*i*][*j*] represents the flow from the *i*th node in the network to the *j*th node. Each number *matrix*[*i*][*j*] must be nonnegative, though it can be zero if there is no flow from node *i* to node *j*. From the [Circos tableviewer example](http://mkweb.bcgsc.ca/circos/guide/tables/):
 
 ```js
 var matrix = [
@@ -40,40 +40,45 @@ var matrix = [
 ];
 ```
 
-The number *matrix*[*i*][*j*] represents to the amount of flow from the *i*th element to the *j*th element; the number *matrix*[*j*][*i*] represents the reverse flow from the *j*th element to the *i*th element. The return value of *chord*(*matrix*) is an array of *chords*, where each chord is an object with the following properties:
+The return value of *chord*(*matrix*) is an array of *chords*, where each chord represents the combined bidirectional flow between two nodes *i* and *j* (where *i* may be equal to *j*) and is an object with the following properties:
+
+* `source` - the source subgroup
+* `target` - the target subgroup
+
+Each source and target subgroup is also an object with the following properties:
 
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians
 * `value` - the flow value *matrix*[*i*][*j*]
-* `index` - the source index *i*
-* `subindex` - the target index *j*
+* `index` - the source node index *i*
+* `subindex` - the target node index *j*
 
-The chords are typically passed to [d3.ribbon](#ribbon) to display the asymmetric flow between elements.
+The chords are typically passed to [d3.ribbon](#ribbon) to display the asymmetric flow between elements. The returned array includes only chord objects for which the value *matrix*[*i*][*j*] or *matrix*[*j*][*i*] is non-zero. Furthermore, the returned array only contains unique chords: a given chord *ij* represents the bidirectional flow from *i* to *j* *and* from *j* to *i*, and does not contain a duplicate chord *ji*. Furthermore, *i* and *j* are chosen such that the chord’s source always represents the larger of *matrix*[*i*][*j*] and *matrix*[*j*][*i*].
 
-The *chords* array defines a second array, *chords*.groups, where each group is an object with the following properties:
+The *chords* array also defines a secondary array of length *n*, *chords*.groups, where each group represents the combined outflow for node *i*, corresponding to the elements *matrix*[*i*][0 … *n* - 1], and is an object with the following properties:
 
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians
-* `value` - the total outgoing flow value *matrix*[*i*][0 … *n* - 1]
-* `index` - the source index *i*
+* `value` - the total outgoing flow value for node *i*
+* `index` - the node index *i*
 
 The groups are typically passed to [d3.arc](https://github.com/d3/d3-shape#arc) to produce a donut chart around the circumference of the chord layout.
 
 <a href="#chord_padAngle" name="#chord_padAngle">#</a> <i>chord</i>.<b>padAngle</b>([<i>angle</i>])
 
-…
+If *angle* is specified, sets the pad angle between adjacent groups to the specified number in radians and returns this chord layout. If *angle* is not specified, returns the current pad angle, which defaults to zero.
 
 <a href="#chord_sortGroups" name="#chord_sortGroups">#</a> <i>chord</i>.<b>sortGroups</b>([<i>compare</i>])
 
-…
+If *compare* is specified, sets the group comparator to the specified function or null and returns this chord layout. If *compare* is not specified, returns the current group comparator, which defaults to null. If the group comparator is non-null, it is used to sort the groups by their total outflow. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
 <a href="#chord_sortSubgroups" name="#chord_sortSubgroups">#</a> <i>chord</i>.<b>sortSubgroups</b>([<i>compare</i>])
 
-…
+If *compare* is specified, sets the subgroup comparator to the specified function or null and returns this chord layout. If *compare* is not specified, returns the current subgroup comparator, which defaults to null. If the subgroup comparator is non-null, it is used to sort the chords corresponding to *matrix*[*i*][0 … *n* - 1] for a given group *i* by their total outflow. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
 <a href="#chord_sortChords" name="#chord_sortChords">#</a> <i>chord</i>.<b>sortChords</b>([<i>compare</i>])
 
-…
+
 
 <a href="#ribbon" name="ribbon">#</a> d3.<b>ribbon</b>()
 

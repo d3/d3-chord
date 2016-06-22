@@ -50,8 +50,8 @@ Each source and target subgroup is also an object with the following properties:
 * `startAngle` - the start angle in radians
 * `endAngle` - the end angle in radians
 * `value` - the flow value *matrix*[*i*][*j*]
-* `index` - the source node index *i*
-* `subindex` - the target node index *j*
+* `index` - the node index *i*
+* `subindex` - the node index *j*
 
 The chords are typically passed to [d3.ribbon](#ribbon) to display the network relationships. The returned array includes only chord objects for which the value *matrix*[*i*][*j*] or *matrix*[*j*][*i*] is non-zero. Furthermore, the returned array only contains unique chords: a given chord *ij* represents the bidirectional flow from *i* to *j* *and* from *j* to *i*, and does not contain a duplicate chord *ji*; *i* and *j* are chosen such that the chord’s source always represents the larger of *matrix*[*i*][*j*] and *matrix*[*j*][*i*].
 

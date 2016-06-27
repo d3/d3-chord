@@ -4,6 +4,7 @@
   "description": "Visualize relationships or network flow with an aesthetically-pleasing circular layout.",
   "keywords": [
     "d3",
+    "d3-module",
     "chord",
     "radial",
     "network",

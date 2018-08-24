@@ -1,6 +1,6 @@
 {
   "name": "d3-chord",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Visualize relationships or network flow with an aesthetically-pleasing circular layout.",
   "keywords": [
     "d3",

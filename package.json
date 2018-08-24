@@ -16,7 +16,7 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/d3-chord.js",
+  "main": "dist/d3-chord.min.js",
   "module": "index",
   "jsnext:main": "index",
   "repository": {
@@ -24,20 +24,19 @@
     "url": "https://github.com/d3/d3-chord.git"
   },
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup --banner \"$(preamble)\" -g d3-array:d3,d3-path:d3 -f umd -n d3 -o build/d3-chord.js -- index.js",
+    "pretest": "rollup -c",
     "test": "tape 'test/**/*-test.js' && eslint index.js src",
-    "prepublish": "npm run test && uglifyjs --preamble \"$(preamble)\" build/d3-chord.js -c -m -o build/d3-chord.min.js",
-    "postpublish": "git push && git push --tags && cd ../d3.github.com && git pull && cp ../d3-chord/build/d3-chord.js d3-chord.v1.js && cp ../d3-chord/build/d3-chord.min.js d3-chord.v1.min.js && git add d3-chord.v1.js d3-chord.v1.min.js && git commit -m \"d3-chord ${npm_package_version}\" && git push && cd - && zip -j build/d3-chord.zip -- LICENSE README.md build/d3-chord.js build/d3-chord.min.js"
+    "prepublishOnly": "rm -rf dist && yarn test",
+    "postpublish": "git push && git push --tags && cd ../d3.github.com && git pull && cp ../${npm_package_name}/dist/${npm_package_name}.js ${npm_package_name}.v1.js && cp ../${npm_package_name}/dist/${npm_package_name}.min.js ${npm_package_name}.v1.min.js && git add ${npm_package_name}.v1.js ${npm_package_name}.v1.min.js && git commit -m \"${npm_package_name} ${npm_package_version}\" && git push && cd - && zip -j dist/${npm_package_name}.zip -- LICENSE README.md dist/${npm_package_name}.js dist/${npm_package_name}.min.js"
   },
   "dependencies": {
     "d3-array": "1",
     "d3-path": "1"
   },
   "devDependencies": {
-    "eslint": "3",
-    "package-preamble": "0.0",
-    "rollup": "0.41",
-    "tape": "4",
-    "uglify-js": "^2.8.11"
+    "eslint": "5",
+    "rollup": "0.64",
+    "rollup-plugin-terser": "1",
+    "tape": "4"
   }
 }

@@ -2,7 +2,7 @@
 
 Visualize relationships or network flow with an aesthetically-pleasing circular layout.
 
-[<img alt="Chord Diagram" src="https://raw.githubusercontent.com/d3/d3-chord/master/img/chord.png" width="480" height="480">](http://bl.ocks.org/mbostock/4062006)
+[<img alt="Chord Diagram" src="https://raw.githubusercontent.com/d3/d3-chord/master/img/chord.png" width="480" height="480">](https://observablehq.com/@d3/chord-diagram)
 
 ## Installing
 
@@ -18,8 +18,6 @@ var chord = d3.chord();
 
 </script>
 ```
-
-[Try d3-chord in your browser.](https://tonicdev.com/npm/d3-chord)
 
 ## API Reference
 

@@ -1,6 +1,6 @@
-import {slice} from "./array";
-import constant from "./constant";
-import {cos, halfPi, sin} from "./math";
+import {slice} from "./array.js";
+import constant from "./constant.js";
+import {cos, halfPi, sin} from "./math.js";
 import {path} from "d3-path";
 
 function defaultSource(d) {

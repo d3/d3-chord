@@ -1,2 +1,2 @@
-export {default as chord} from "./chord";
-export {default as ribbon} from "./ribbon";
+export {default as chord} from "./chord.js";
+export {default as ribbon} from "./ribbon.js";

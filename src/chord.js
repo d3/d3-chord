@@ -1,5 +1,5 @@
 import {range} from "d3-array";
-import {max, tau} from "./math";
+import {max, tau} from "./math.js";
 
 function compareValue(compare) {
   return function(a, b) {

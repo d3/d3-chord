@@ -38,6 +38,7 @@
     "d3-array": "1",
     "d3-path": "1"
   },
+  "sideEffects": false,
   "devDependencies": {
     "eslint": "6",
     "rollup": "1",

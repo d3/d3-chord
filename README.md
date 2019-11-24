@@ -187,3 +187,17 @@ The *angle* is specified in radians, with 0 at -*y* (12 o’clock) and positive 
 <a href="#ribbon_context" name="ribbon_context">#</a> <i>ribbon</i>.<b>context</b>([<i>context</i>]) [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
 
 If *context* is specified, sets the context and returns this ribbon generator. If *context* is not specified, returns the current context, which defaults to null. If the context is not null, then the [generated ribbon](#_ribbon) is rendered to this context as a sequence of [path method](http://www.w3.org/TR/2dcontext/#canvaspathmethods) calls. Otherwise, a [path data](http://www.w3.org/TR/SVG/paths.html#PathData) string representing the generated ribbon is returned. See also [d3-path](https://github.com/d3/d3-path).
+
+<a href="#ribbonArrow" name="ribbonArrow">#</a> d3.<b>ribbonArrow</b>() [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
+
+Creates a new arrow ribbon generator with the default settings.
+
+<a href="#ribbonArrow_headRadius" name="ribbonArrow_headRadius">#</a> <i>ribbonArrow</i>.<b>headRadius</b>([<i>radius</i>]) [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
+
+If *radius* is specified, sets the arrowhead radius accessor to the specified function and returns this ribbon generator. If *radius* is not specified, returns the current arrowhead radius accessor, which defaults to:
+
+```js
+function headRadius() {
+  return 10;
+}
+```

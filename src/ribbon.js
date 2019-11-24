@@ -1,7 +1,7 @@
+import {path} from "d3-path";
 import {slice} from "./array.js";
 import constant from "./constant.js";
 import {cos, halfPi, sin} from "./math.js";
-import {path} from "d3-path";
 
 function defaultSource(d) {
   return d.source;
@@ -23,7 +23,11 @@ function defaultEndAngle(d) {
   return d.endAngle;
 }
 
-export default function() {
+function defaultArrowheadRadius() {
+  return 10;
+}
+
+function ribbon(headRadius) {
   var source = defaultSource,
       target = defaultTarget,
       sourceRadius = defaultRadius,
@@ -34,9 +38,9 @@ export default function() {
 
   function ribbon() {
     var buffer,
+        s = source.apply(this, arguments),
+        t = target.apply(this, arguments),
         argv = slice.call(arguments),
-        s = source.apply(this, argv),
-        t = target.apply(this, argv),
         sr = +sourceRadius.apply(this, (argv[0] = s, argv)),
         sa0 = startAngle.apply(this, argv) - halfPi,
         sa1 = endAngle.apply(this, argv) - halfPi,
@@ -52,13 +56,23 @@ export default function() {
     context.arc(0, 0, sr, sa0, sa1);
     if (sa0 !== ta0 || sa1 !== ta1) {
       context.quadraticCurveTo(0, 0, tr * cos(ta0), tr * sin(ta0));
-      context.arc(0, 0, tr, ta0, ta1);
+      if (headRadius) {
+        var hr = +headRadius.apply(this, arguments), tr2 = tr - hr, ta2 = (ta0 + ta1) / 2;
+        context.lineTo(tr2 * cos(ta2), tr2 * sin(ta2));
+        context.lineTo(tr * cos(ta1), tr * cos(ta1));
+      } else {
+        context.arc(0, 0, tr, ta0, ta1);
+      }
     }
     context.quadraticCurveTo(0, 0, sx0, sy0);
     context.closePath();
 
     if (buffer) return context = null, buffer + "" || null;
   }
+
+  if (headRadius) ribbon.headRadius = function(_) {
+    return arguments.length ? (headRadius = typeof _ === "function" ? _ : constant(+_), ribbon) : headRadius;
+  };
 
   ribbon.radius = function(_) {
     return arguments.length ? (sourceRadius = targetRadius = typeof _ === "function" ? _ : constant(+_), ribbon) : sourceRadius;
@@ -93,4 +107,12 @@ export default function() {
   };
 
   return ribbon;
+}
+
+export default function() {
+  return ribbon();
+}
+
+export function ribbonArrow() {
+  return ribbon(defaultArrowheadRadius);
 }

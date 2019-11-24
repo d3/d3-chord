@@ -1,5 +1,8 @@
-import {range} from "d3-array";
 import {max, tau} from "./math.js";
+
+function range(n) {
+  return Array.from({length: n}, (_, i) => i);
+}
 
 function compareValue(compare) {
   return function(a, b) {
@@ -42,15 +45,13 @@ export default function() {
     }
 
     // Sort groups…
-    if (sortGroups) groupIndex.sort(function(a, b) {
-      return sortGroups(groupSums[a], groupSums[b]);
+    if (sortGroups) groupIndex.sort((a, b) => {
+      sortGroups(groupSums[a], groupSums[b]);
     });
 
     // Sort subgroups…
-    if (sortSubgroups) subgroupIndex.forEach(function(d, i) {
-      d.sort(function(a, b) {
-        return sortSubgroups(matrix[i][a], matrix[i][b]);
-      });
+    if (sortSubgroups) subgroupIndex.forEach((d, i) => {
+      d.sort((a, b) => sortSubgroups(matrix[i][a], matrix[i][b]));
     });
 
     // Convert the sum to scaling factor for [0, 2pi].

@@ -14,6 +14,14 @@ function compareValue(compare) {
 }
 
 export default function() {
+  return chord(false);
+}
+
+export function chordDirected() {
+  return chord(true);
+}
+
+function chord(directed) {
   var padAngle = 0,
       sortGroups = null,
       sortSubgroups = null,
@@ -37,7 +45,7 @@ export default function() {
     // Compute the sum.
     k = 0, i = -1; while (++i < n) {
       x = 0, j = -1; while (++j < n) {
-        x += matrix[i][j];
+        x += matrix[i][j] + directed * matrix[j][i];
       }
       groupSums.push(x);
       subgroupIndex.push(range(n));
@@ -66,7 +74,7 @@ export default function() {
       x0 = x, j = -1; while (++j < n) {
         var di = groupIndex[i],
             dj = subgroupIndex[di][j],
-            v = matrix[di][dj],
+            v = matrix[di][dj] + directed * matrix[dj][di],
             a0 = x,
             a1 = x += v * k;
         subgroups[dj * n + di] = {
@@ -90,9 +98,43 @@ export default function() {
     i = -1; while (++i < n) {
       j = i - 1; while (++j < n) {
         var source = subgroups[j * n + i],
-            target = subgroups[i * n + j];
-        if (source.value || target.value) {
-          chords.push(source.value < target.value
+            target = subgroups[i * n + j],
+            sourceValue = matrix[i][j],
+            targetValue = matrix[j][i];
+        if (directed) {
+          var t = sourceValue / (sourceValue + targetValue);
+          if (sourceValue) {
+            chords.push({
+              source: {
+                index: i,
+                startAngle: source.startAngle * t + source.endAngle * (1 - t),
+                endAngle: source.startAngle * (1 - t) + source.endAngle * t
+              },
+              target: {
+                index: j,
+                startAngle: target.startAngle * t + target.endAngle * (1 - t),
+                endAngle: target.startAngle * (1 - t) + target.endAngle * t
+              },
+              value: sourceValue
+            });
+          }
+          if (targetValue) {
+            chords.push({
+              source: {
+                index: j,
+                startAngle: target.startAngle * (1 - t) + target.endAngle * t,
+                endAngle: target.startAngle * t + target.endAngle * (1 - t)
+              },
+              target: {
+                index: i,
+                startAngle: source.startAngle * (1 - t) + source.endAngle * t,
+                endAngle: source.startAngle * t + source.endAngle * (1 - t)
+              },
+              value: targetValue
+            });
+          }
+        } else if (sourceValue || targetValue) {
+          chords.push(sourceValue < targetValue
               ? {source: target, target: source}
               : {source: source, target: target});
         }

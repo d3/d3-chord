@@ -54,7 +54,7 @@ function chord(directed) {
 
     // Sort.
     if (sortGroups) groupIndex.sort((a, b) => sortGroups(groupSums[a], groupSums[b]));
-    if (sortSubgroups) subgroupIndex.forEach((d, i) => d.sort((a, b) => sortSubgroups(matrix[i][a], matrix[i][b])));
+    if (sortSubgroups) subgroupIndex.forEach((d, i) => d.sort((a, b) => sortSubgroups(matrix[i][a] + directed * matrix[a][i], matrix[i][b] + directed * matrix[b][i])));
 
     // Convert the sum to scaling factor for [0, 2pi].
     // TODO Allow start and end angle to be specified?

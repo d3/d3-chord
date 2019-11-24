@@ -26,7 +26,8 @@ function defaultEndAngle(d) {
 export default function() {
   var source = defaultSource,
       target = defaultTarget,
-      radius = defaultRadius,
+      sourceRadius = defaultRadius,
+      targetRadius = defaultRadius,
       startAngle = defaultStartAngle,
       endAngle = defaultEndAngle,
       context = null;
@@ -36,12 +37,12 @@ export default function() {
         argv = slice.call(arguments),
         s = source.apply(this, argv),
         t = target.apply(this, argv),
-        sr = +radius.apply(this, (argv[0] = s, argv)),
+        sr = +sourceRadius.apply(this, (argv[0] = s, argv)),
         sa0 = startAngle.apply(this, argv) - halfPi,
         sa1 = endAngle.apply(this, argv) - halfPi,
         sx0 = sr * cos(sa0),
         sy0 = sr * sin(sa0),
-        tr = +radius.apply(this, (argv[0] = t, argv)),
+        tr = +targetRadius.apply(this, (argv[0] = t, argv)),
         ta0 = startAngle.apply(this, argv) - halfPi,
         ta1 = endAngle.apply(this, argv) - halfPi;
 
@@ -49,7 +50,7 @@ export default function() {
 
     context.moveTo(sx0, sy0);
     context.arc(0, 0, sr, sa0, sa1);
-    if (sa0 !== ta0 || sa1 !== ta1) { // TODO sr !== tr?
+    if (sa0 !== ta0 || sa1 !== ta1) {
       context.quadraticCurveTo(0, 0, tr * cos(ta0), tr * sin(ta0));
       context.arc(0, 0, tr, ta0, ta1);
     }
@@ -60,7 +61,15 @@ export default function() {
   }
 
   ribbon.radius = function(_) {
-    return arguments.length ? (radius = typeof _ === "function" ? _ : constant(+_), ribbon) : radius;
+    return arguments.length ? (sourceRadius = targetRadius = typeof _ === "function" ? _ : constant(+_), ribbon) : sourceRadius;
+  };
+
+  ribbon.sourceRadius = function(_) {
+    return arguments.length ? (sourceRadius = typeof _ === "function" ? _ : constant(+_), ribbon) : sourceRadius;
+  };
+
+  ribbon.targetRadius = function(_) {
+    return arguments.length ? (targetRadius = typeof _ === "function" ? _ : constant(+_), ribbon) : targetRadius;
   };
 
   ribbon.startAngle = function(_) {

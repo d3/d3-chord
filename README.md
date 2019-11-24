@@ -184,6 +184,18 @@ function endAngle(d) {
 
 The *angle* is specified in radians, with 0 at -*y* (12 o’clock) and positive angles proceeding clockwise.
 
+<a href="#ribbon_padAngle" name="ribbon_padAngle">#</a> <i>ribbon</i>.<b>padAngle</b>([<i>angle</i>]) [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
+
+If *angle* is specified, sets the pad angle accessor to the specified function and returns this ribbon generator. If *angle* is not specified, returns the current pad angle accessor, which defaults to:
+
+```js
+function padAngle() {
+  return 0;
+}
+```
+
+The pad angle specifies the angular gap between adjacent ribbons.
+
 <a href="#ribbon_context" name="ribbon_context">#</a> <i>ribbon</i>.<b>context</b>([<i>context</i>]) [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
 
 If *context* is specified, sets the context and returns this ribbon generator. If *context* is not specified, returns the current context, which defaults to null. If the context is not null, then the [generated ribbon](#_ribbon) is rendered to this context as a sequence of [path method](http://www.w3.org/TR/2dcontext/#canvaspathmethods) calls. Otherwise, a [path data](http://www.w3.org/TR/SVG/paths.html#PathData) string representing the generated ribbon is returned. See also [d3-path](https://github.com/d3/d3-path).

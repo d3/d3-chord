@@ -55,12 +55,13 @@ function ribbon(headRadius) {
     context.moveTo(sx0, sy0);
     context.arc(0, 0, sr, sa0, sa1);
     if (sa0 !== ta0 || sa1 !== ta1) {
-      context.quadraticCurveTo(0, 0, tr * cos(ta0), tr * sin(ta0));
       if (headRadius) {
         var hr = +headRadius.apply(this, arguments), tr2 = tr - hr, ta2 = (ta0 + ta1) / 2;
-        context.lineTo(tr2 * cos(ta2), tr2 * sin(ta2));
-        context.lineTo(tr * cos(ta1), tr * cos(ta1));
+        context.quadraticCurveTo(0, 0, tr2 * cos(ta0), tr2 * sin(ta0));
+        context.lineTo(tr * cos(ta2), tr * sin(ta2));
+        context.lineTo(tr2 * cos(ta1), tr2 * sin(ta1));
       } else {
+        context.quadraticCurveTo(0, 0, tr * cos(ta0), tr * sin(ta0));
         context.arc(0, 0, tr, ta0, ta1);
       }
     }

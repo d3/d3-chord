@@ -101,28 +101,28 @@ function chord(directed) {
             chords.push({
               source: {
                 index: i,
-                startAngle: source.startAngle * t + source.endAngle * (1 - t),
-                endAngle: source.startAngle * (1 - t) + source.endAngle * t
+                startAngle: source.startAngle,
+                endAngle: source.endAngle * t + source.startAngle * (1 - t)
               },
               target: {
                 index: j,
                 startAngle: target.startAngle * t + target.endAngle * (1 - t),
-                endAngle: target.startAngle * (1 - t) + target.endAngle * t
+                endAngle: target.endAngle
               },
               value: sourceValue
             });
           }
-          if (targetValue) {
+          if (targetValue && (i !== j)) {
             chords.push({
               source: {
                 index: j,
-                startAngle: target.startAngle * (1 - t) + target.endAngle * t,
-                endAngle: target.startAngle * t + target.endAngle * (1 - t)
+                startAngle: target.startAngle,
+                endAngle: target.endAngle * (1 - t) + target.startAngle * t
               },
               target: {
                 index: i,
                 startAngle: source.startAngle * (1 - t) + source.endAngle * t,
-                endAngle: source.startAngle * t + source.endAngle * (1 - t)
+                endAngle: source.endAngle
               },
               value: targetValue
             });

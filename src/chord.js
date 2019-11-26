@@ -55,15 +55,14 @@ function chord(directed) {
           if (sortSubgroups) subgroupIndex.sort((a, b) => sortSubgroups(a < 0 ? -matrix[~a][i] : matrix[i][a], b < 0 ? -matrix[~b][i] : matrix[i][b]));
           for (const j of subgroupIndex) {
             if (j < 0) {
-              const chord = chords[~j * n + i] || (chords[~j * n + i] = {source: null, target: null, value: null});
-              chord.target = {index: i, startAngle: x, endAngle: x += matrix[~j][i] * k};
+              const chord = chords[~j * n + i] || (chords[~j * n + i] = {source: null, target: null});
+              chord.target = {index: i, startAngle: x, endAngle: x += matrix[~j][i] * k, value: matrix[~j][i]};
             } else {
-              const chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null, value: null});
-              chord.source = {index: i, startAngle: x, endAngle: x += matrix[i][j] * k};
-              chord.value = matrix[i][j];
+              const chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null});
+              chord.source = {index: i, startAngle: x, endAngle: x += matrix[i][j] * k, value: matrix[i][j]};
             }
           }
-          groups[i] = {index: i, startAngle: x0, endAngle: x, value: groupSums[i], sourceValue: matrix[i].reduce((p, v) => p + v, 0), targetValue: matrix.reduce((p, v) => p + v[i], 0)};
+          groups[i] = {index: i, startAngle: x0, endAngle: x, value: groupSums[i]};
         } else {
           const subgroupIndex = range(0, n).filter(j => matrix[i][j] || matrix[j][i]);
           if (sortSubgroups) subgroupIndex.sort((a, b) => sortSubgroups(matrix[i][a], matrix[i][b]));
@@ -84,7 +83,7 @@ function chord(directed) {
     }
 
     // Remove empty chords.
-    chords = chords.filter(x => x); // XXX
+    chords = Object.values(chords);
     chords.groups = groups;
     return sortChords ? chords.sort(sortChords) : chords;
   }

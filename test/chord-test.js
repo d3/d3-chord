@@ -41,8 +41,8 @@ tape("d3.chord() has the expected defaults", function(test) {
       source: {index: 1, startAngle: 1.9842927, endAngle: 2.6156272, value: 10048},
       target: {index: 1, startAngle: 1.9842927, endAngle: 2.6156272, value: 10048}
     }, {
-      source: {index: 1, startAngle: 2.6156272, endAngle: 2.7450608, value:  2060},
-      target: {index: 2, startAngle: 3.6360793, endAngle: 4.6504996, value: 16145}
+      source: {index: 2, startAngle: 3.6360793, endAngle: 4.6504996, value: 16145},
+      target: {index: 1, startAngle: 2.6156272, endAngle: 2.7450608, value:  2060}
     }, {
       source: {index: 1, startAngle: 2.7450608, endAngle: 3.1327961, value:  6171},
       target: {index: 3, startAngle: 5.7279402, endAngle: 5.7901437, value:   990}
@@ -88,8 +88,8 @@ tape("chord.padAngle(angle) sets the pad angle", function(test) {
       source: {index: 1, startAngle: 1.8524478, endAngle: 2.4636862, value: 10048},
       target: {index: 1, startAngle: 1.8524478, endAngle: 2.4636862, value: 10048}
     }, {
-      source: {index: 1, startAngle: 2.8390796, endAngle: 2.9643932, value:  2060},
-      target: {index: 2, startAngle: 3.1330761, endAngle: 4.1152064, value: 16145}
+      source: {index: 2, startAngle: 3.1330761, endAngle: 4.1152064, value: 16145},
+      target: {index: 1, startAngle: 2.8390796, endAngle: 2.9643932, value:  2060}
     }, {
       source: {index: 1, startAngle: 2.4636862, endAngle: 2.8390796, value:  6171},
       target: {index: 3, startAngle: 6.1157798, endAngle: 6.1760033, value:   990}

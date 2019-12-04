@@ -75,13 +75,19 @@ function chord(directed, transpose) {
           const subgroupIndex = range(0, n).filter(j => matrix[i * n + j] || matrix[j * n + i]);
           if (sortSubgroups) subgroupIndex.sort((a, b) => sortSubgroups(matrix[i * n + a], matrix[i * n + b]));
           for (const j of subgroupIndex) {
+            let chord;
             if (i < j) {
-              const chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null});
+              chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null});
               chord.source = {index: i, startAngle: x, endAngle: x += matrix[i * n + j] * k, value: matrix[i * n + j]};
             } else {
-              const chord = chords[j * n + i] || (chords[j * n + i] = {source: null, target: null});
+              chord = chords[j * n + i] || (chords[j * n + i] = {source: null, target: null});
               chord.target = {index: i, startAngle: x, endAngle: x += matrix[i * n + j] * k, value: matrix[i * n + j]};
               if (i === j) chord.source = chord.target;
+            }
+            if (chord.source && chord.target && chord.source.value < chord.target.value) {
+              const source = chord.source;
+              chord.source = chord.target;
+              chord.target = source;
             }
           }
           groups[i] = {index: i, startAngle: x0, endAngle: x, value: groupSums[i]};

@@ -1,5 +1,8 @@
-import {range} from "d3-array";
 import {max, tau} from "./math.js";
+
+function range(i, j) {
+  return Array.from({length: j - i}, (_, k) => i + k);
+}
 
 function compareValue(compare) {
   return function(a, b) {
@@ -11,6 +14,18 @@ function compareValue(compare) {
 }
 
 export default function() {
+  return chord(false, false);
+}
+
+export function chordTranspose() {
+  return chord(false, true);
+}
+
+export function chordDirected() {
+  return chord(true, false);
+}
+
+function chord(directed, transpose) {
   var padAngle = 0,
       sortGroups = null,
       sortSubgroups = null,
@@ -18,86 +33,72 @@ export default function() {
 
   function chord(matrix) {
     var n = matrix.length,
-        groupSums = [],
-        groupIndex = range(n),
-        subgroupIndex = [],
-        chords = [],
-        groups = chords.groups = new Array(n),
-        subgroups = new Array(n * n),
-        k,
-        x,
-        x0,
-        dx,
-        i,
-        j;
+        groupSums = new Array(n),
+        groupIndex = range(0, n),
+        chords = new Array(n * n),
+        groups = new Array(n),
+        k = 0, dx;
 
-    // Compute the sum.
-    k = 0, i = -1; while (++i < n) {
-      x = 0, j = -1; while (++j < n) {
-        x += matrix[i][j];
-      }
-      groupSums.push(x);
-      subgroupIndex.push(range(n));
-      k += x;
+    matrix = Float64Array.from({length: n * n}, transpose
+        ? (_, i) => matrix[i % n][i / n | 0]
+        : (_, i) => matrix[i / n | 0][i % n]);
+
+    // Compute the scaling factor from value to angle in [0, 2pi].
+    for (let i = 0; i < n; ++i) {
+      let x = 0;
+      for (let j = 0; j < n; ++j) x += matrix[i * n + j] + directed * matrix[j * n + i];
+      k += groupSums[i] = x;
     }
-
-    // Sort groups…
-    if (sortGroups) groupIndex.sort(function(a, b) {
-      return sortGroups(groupSums[a], groupSums[b]);
-    });
-
-    // Sort subgroups…
-    if (sortSubgroups) subgroupIndex.forEach(function(d, i) {
-      d.sort(function(a, b) {
-        return sortSubgroups(matrix[i][a], matrix[i][b]);
-      });
-    });
-
-    // Convert the sum to scaling factor for [0, 2pi].
-    // TODO Allow start and end angle to be specified?
-    // TODO Allow padding to be specified as percentage?
     k = max(0, tau - padAngle * n) / k;
     dx = k ? padAngle : tau / n;
 
-    // Compute the start and end angle for each group and subgroup.
-    // Note: Opera has a bug reordering object literal properties!
-    x = 0, i = -1; while (++i < n) {
-      x0 = x, j = -1; while (++j < n) {
-        var di = groupIndex[i],
-            dj = subgroupIndex[di][j],
-            v = matrix[di][dj],
-            a0 = x,
-            a1 = x += v * k;
-        subgroups[dj * n + di] = {
-          index: di,
-          subindex: dj,
-          startAngle: a0,
-          endAngle: a1,
-          value: v
-        };
-      }
-      groups[di] = {
-        index: di,
-        startAngle: x0,
-        endAngle: x,
-        value: groupSums[di]
-      };
-      x += dx;
-    }
-
-    // Generate chords for each (non-empty) subgroup-subgroup link.
-    i = -1; while (++i < n) {
-      j = i - 1; while (++j < n) {
-        var source = subgroups[j * n + i],
-            target = subgroups[i * n + j];
-        if (source.value || target.value) {
-          chords.push(source.value < target.value
-              ? {source: target, target: source}
-              : {source: source, target: target});
+    // Compute the angles for each group and constituent chord.
+    {
+      let x = 0;
+      if (sortGroups) groupIndex.sort((a, b) => sortGroups(groupSums[a], groupSums[b]));
+      for (const i of groupIndex) {
+        const x0 = x;
+        if (directed) {
+          const subgroupIndex = range(~n + 1, n).filter(j => j < 0 ? matrix[~j * n + i] : matrix[i * n + j]);
+          if (sortSubgroups) subgroupIndex.sort((a, b) => sortSubgroups(a < 0 ? -matrix[~a * n + i] : matrix[i * n + a], b < 0 ? -matrix[~b * n + i] : matrix[i * n + b]));
+          for (const j of subgroupIndex) {
+            if (j < 0) {
+              const chord = chords[~j * n + i] || (chords[~j * n + i] = {source: null, target: null});
+              chord.target = {index: i, startAngle: x, endAngle: x += matrix[~j * n + i] * k, value: matrix[~j * n + i]};
+            } else {
+              const chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null});
+              chord.source = {index: i, startAngle: x, endAngle: x += matrix[i * n + j] * k, value: matrix[i * n + j]};
+            }
+          }
+          groups[i] = {index: i, startAngle: x0, endAngle: x, value: groupSums[i]};
+        } else {
+          const subgroupIndex = range(0, n).filter(j => matrix[i * n + j] || matrix[j * n + i]);
+          if (sortSubgroups) subgroupIndex.sort((a, b) => sortSubgroups(matrix[i * n + a], matrix[i * n + b]));
+          for (const j of subgroupIndex) {
+            let chord;
+            if (i < j) {
+              chord = chords[i * n + j] || (chords[i * n + j] = {source: null, target: null});
+              chord.source = {index: i, startAngle: x, endAngle: x += matrix[i * n + j] * k, value: matrix[i * n + j]};
+            } else {
+              chord = chords[j * n + i] || (chords[j * n + i] = {source: null, target: null});
+              chord.target = {index: i, startAngle: x, endAngle: x += matrix[i * n + j] * k, value: matrix[i * n + j]};
+              if (i === j) chord.source = chord.target;
+            }
+            if (chord.source && chord.target && chord.source.value < chord.target.value) {
+              const source = chord.source;
+              chord.source = chord.target;
+              chord.target = source;
+            }
+          }
+          groups[i] = {index: i, startAngle: x0, endAngle: x, value: groupSums[i]};
         }
+        x += dx;
       }
     }
 
+    // Remove empty chords.
+    chords = Object.values(chords);
+    chords.groups = groups;
     return sortChords ? chords.sort(sortChords) : chords;
   }
 

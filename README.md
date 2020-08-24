@@ -76,6 +76,14 @@ If *compare* is specified, sets the subgroup comparator to the specified functio
 
 If *compare* is specified, sets the chord comparator to the specified function or null and returns this chord layout. If *compare* is not specified, returns the current chord comparator, which defaults to null. If the chord comparator is non-null, it is used to sort the [chords](#_chord) by their combined flow; this only affects the *z*-order of the chords. See also [d3.ascending](https://github.com/d3/d3-array/blob/master/README.md#ascending) and [d3.descending](https://github.com/d3/d3-array/blob/master/README.md#descending).
 
+<a href="#chordDirected" name="chordDirected">#</a> d3.<b>chordDirected</b>()
+
+See https://observablehq.com/@d3/directed-chord-diagram.
+
+<a href="#chordTranspose" name="chordTranspose">#</a> d3.<b>chordTranspose</b>()
+
+…
+
 <a href="#ribbon" name="ribbon">#</a> d3.<b>ribbon</b>() [<>](https://github.com/d3/d3-chord/blob/master/src/ribbon.js "Source")
 
 Creates a new ribbon generator with the default settings.

@@ -76,13 +76,13 @@ If *compare* is specified, sets the subgroup comparator to the specified functio
 
 If *compare* is specified, sets the chord comparator to the specified function or null and returns this chord layout. If *compare* is not specified, returns the current chord comparator, which defaults to null. If the chord comparator is non-null, it is used to sort the [chords](#_chord) by their combined flow; this only affects the *z*-order of the chords. See also [d3.ascending](https://github.com/d3/d3-array/blob/master/README.md#ascending) and [d3.descending](https://github.com/d3/d3-array/blob/master/README.md#descending).
 
-<a href="#chordDirected" name="chordDirected">#</a> d3.<b>chordDirected</b>() · [Source](https://github.com/d3/d3-chord/blob/master/src/chord.js)
+<a href="#chordDirected" name="chordDirected">#</a> d3.<b>chordDirected</b>() · [Source](https://github.com/d3/d3-chord/blob/master/src/chord.js), [Examples](https://observablehq.com/@d3/directed-chord-diagram)
 
-See https://observablehq.com/@d3/directed-chord-diagram.
+A chord layout for directional flows. The chord from *i* to *j* is generated from the value in *matrix*[*i*][*j*] only.
 
 <a href="#chordTranspose" name="chordTranspose">#</a> d3.<b>chordTranspose</b>() · [Source](https://github.com/d3/d3-chord/blob/master/src/chord.js)
 
-…
+A transposed chord layout. Useful to highlight outgoing (rather than incoming) flows.
 
 <a href="#ribbon" name="ribbon">#</a> d3.<b>ribbon</b>() · [Source](https://github.com/d3/d3-chord/blob/master/src/ribbon.js)
 

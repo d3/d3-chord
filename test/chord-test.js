@@ -1,30 +1,29 @@
-var tape = require("tape"),
-    d3 = require("../");
-
-require("./inDelta");
+import assert from "assert";
+import * as d3 from "../src/index.js";
+import {assertInDelta} from "./asserts.js";
 
 // From http://mkweb.bcgsc.ca/circos/guide/tables/
-var matrix = [
+const matrix = [
   [11975,  5871, 8916, 2868],
   [ 1951, 10048, 2060, 6171],
   [ 8010, 16145, 8090, 8045],
   [ 1013,   990,  940, 6907]
 ];
 
-tape("d3.chord() has the expected defaults", function(test) {
-  var chord = d3.chord();
-  test.equal(chord.padAngle(), 0);
-  test.equal(chord.sortGroups(), null);
-  test.equal(chord.sortSubgroups(), null);
-  test.equal(chord.sortChords(), null);
-  var chords = chord(matrix);
-  test.inDelta(chords.groups, [
+it("d3.chord() has the expected defaults", () => {
+  const chord = d3.chord();
+  assert.strictEqual(chord.padAngle(), 0);
+  assert.strictEqual(chord.sortGroups(), null);
+  assert.strictEqual(chord.sortSubgroups(), null);
+  assert.strictEqual(chord.sortChords(), null);
+  const chords = chord(matrix);
+  assertInDelta(chords.groups, [
     {index: 0, startAngle: 0.0000000, endAngle: 1.8617078, value: 29630},
     {index: 1, startAngle: 1.8617078, endAngle: 3.1327961, value: 20230},
     {index: 2, startAngle: 3.1327961, endAngle: 5.6642915, value: 40290},
     {index: 3, startAngle: 5.6642915, endAngle: 6.2831853, value:  9850}
   ]);
-  test.inDelta(chords, [
+  assertInDelta(chords, [
     {
       source: {index: 0, startAngle: 0.0000000, endAngle: 0.7524114, value: 11975},
       target: {index: 0, startAngle: 0.0000000, endAngle: 0.7524114, value: 11975}
@@ -57,21 +56,20 @@ tape("d3.chord() has the expected defaults", function(test) {
       target: {index: 3, startAngle: 5.8492056, endAngle: 6.2831853, value:  6907}
     }
   ]);
-  test.end();
 });
 
-tape("chord.padAngle(angle) sets the pad angle", function(test) {
-  var chord = d3.chord().sortSubgroups(function(a, b) { return b - a; });
-  test.equal(chord.padAngle(0.05), chord);
-  test.equal(chord.padAngle(), 0.05);
-  var chords = chord(matrix);
-  test.inDelta(chords.groups, [
+it("chord.padAngle(angle) sets the pad angle", () => {
+  const chord = d3.chord().sortSubgroups(function(a, b) { return b - a; });
+  assert.strictEqual(chord.padAngle(0.05), chord);
+  assert.strictEqual(chord.padAngle(), 0.05);
+  const chords = chord(matrix);
+  assertInDelta(chords.groups, [
     {index: 0, startAngle: 0.0000000, endAngle: 1.80244780, value: 29630},
     {index: 1, startAngle: 1.8524478, endAngle: 3.08307619, value: 20230},
     {index: 2, startAngle: 3.1330761, endAngle: 5.58399155, value: 40290},
     {index: 3, startAngle: 5.6339915, endAngle: 6.23318530, value:  9850}
   ]);
-  test.inDelta(chords, [
+  assertInDelta(chords, [
     {
       source: {index: 0, startAngle: 0.0000000, endAngle: 0.7284614, value: 11975},
       target: {index: 0, startAngle: 0.0000000, endAngle: 0.7284614, value: 11975}
@@ -104,5 +102,4 @@ tape("chord.padAngle(angle) sets the pad angle", function(test) {
       target: {index: 3, startAngle: 5.6339915, endAngle: 6.0541571, value:  6907}
     }
   ]);
-  test.end();
 });

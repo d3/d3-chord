@@ -1,59 +1,53 @@
-var tape = require("tape"),
-    d3 = require("../");
+import assert from "assert";
+import {ribbon} from "../src/index.js";
 
-tape("d3.ribbon() has the expected defaults", function(test) {
-  var r = d3.ribbon();
-  test.equal(r.radius()({radius: 42}), 42);
-  test.equal(r.startAngle()({startAngle: 42}), 42);
-  test.equal(r.endAngle()({endAngle: 42}), 42);
-  test.deepEqual(r.source()({source: {name: "foo"}}), {name: "foo"});
-  test.deepEqual(r.target()({target: {name: "foo"}}), {name: "foo"});
-  test.equal(r.context(), null);
-  test.end();
+it("ribbon() has the expected defaults", () => {
+  const r = ribbon();
+  assert.strictEqual(r.radius()({radius: 42}), 42);
+  assert.strictEqual(r.startAngle()({startAngle: 42}), 42);
+  assert.strictEqual(r.endAngle()({endAngle: 42}), 42);
+  assert.deepStrictEqual(r.source()({source: {name: "foo"}}), {name: "foo"});
+  assert.deepStrictEqual(r.target()({target: {name: "foo"}}), {name: "foo"});
+  assert.strictEqual(r.context(), null);
 });
 
-tape("ribbon.radius(radius) sets the radius accessor", function(test) {
-  var foo = function(d) { return d.foo; },
-      r = d3.ribbon();
-  test.equal(r.radius(foo), r);
-  test.equal(r.radius(), foo);
-  test.equal(r.radius(42), r);
-  test.equal(r.radius()(), 42);
-  test.end();
+it("ribbon.radius(radius) sets the radius accessor", () => {
+  const foo = d => d.foo;
+  const r = ribbon();
+  assert.strictEqual(r.radius(foo), r);
+  assert.strictEqual(r.radius(), foo);
+  assert.strictEqual(r.radius(42), r);
+  assert.strictEqual(r.radius()(), 42);
 });
 
-tape("ribbon.startAngle(startAngle) sets the startAngle accessor", function(test) {
-  var foo = function(d) { return d.foo; },
-      r = d3.ribbon();
-  test.equal(r.startAngle(foo), r);
-  test.equal(r.startAngle(), foo);
-  test.equal(r.startAngle(1.2), r);
-  test.equal(r.startAngle()(), 1.2);
-  test.end();
+it("ribbon.startAngle(startAngle) sets the startAngle accessor", () => {
+  const foo = d => d.foo;
+  const r = ribbon();
+  assert.strictEqual(r.startAngle(foo), r);
+  assert.strictEqual(r.startAngle(), foo);
+  assert.strictEqual(r.startAngle(1.2), r);
+  assert.strictEqual(r.startAngle()(), 1.2);
 });
 
-tape("ribbon.endAngle(endAngle) sets the endAngle accessor", function(test) {
-  var foo = function(d) { return d.foo; },
-      r = d3.ribbon();
-  test.equal(r.endAngle(foo), r);
-  test.equal(r.endAngle(), foo);
-  test.equal(r.endAngle(1.2), r);
-  test.equal(r.endAngle()(), 1.2);
-  test.end();
+it("ribbon.endAngle(endAngle) sets the endAngle accessor", () => {
+  const foo = d => d.foo;
+  const r = ribbon();
+  assert.strictEqual(r.endAngle(foo), r);
+  assert.strictEqual(r.endAngle(), foo);
+  assert.strictEqual(r.endAngle(1.2), r);
+  assert.strictEqual(r.endAngle()(), 1.2);
 });
 
-tape("ribbon.source(source) sets the source accessor", function(test) {
-  var foo = function(d) { return d.foo; },
-      r = d3.ribbon();
-  test.equal(r.source(foo), r);
-  test.equal(r.source(), foo);
-  test.end();
+it("ribbon.source(source) sets the source accessor", () => {
+  const foo = d => d.foo;
+  const r = ribbon();
+  assert.strictEqual(r.source(foo), r);
+  assert.strictEqual(r.source(), foo);
 });
 
-tape("ribbon.target(target) sets the target accessor", function(test) {
-  var foo = function(d) { return d.foo; },
-      r = d3.ribbon();
-  test.equal(r.target(foo), r);
-  test.equal(r.target(), foo);
-  test.end();
+it("ribbon.target(target) sets the target accessor", () => {
+  const foo = d => d.foo;
+  const r = ribbon();
+  assert.strictEqual(r.target(foo), r);
+  assert.strictEqual(r.target(), foo);
 });

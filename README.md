@@ -6,14 +6,26 @@ Visualize relationships or network flow with an aesthetically-pleasing circular 
 
 ## Installing
 
-If you use NPM, `npm install d3-chord`. Otherwise, download the [latest release](https://github.com/d3/d3-chord/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-chord.v2.min.js) or as part of [D3](https://github.com/d3/d3). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
+If you use npm, `npm install d3-chord`. You can also download the [latest release on GitHub](https://github.com/d3/d3-chord/releases/latest). For vanilla HTML in modern browsers, import d3-chord from Skypack:
 
 ```html
-<script src="https://d3js.org/d3-path.v2.min.js"></script>
-<script src="https://d3js.org/d3-chord.v2.min.js"></script>
+<script type="module">
+
+import {chord} from "https://cdn.skypack.dev/d3-chord@3";
+
+const c = chord();
+
+</script>
+```
+
+For legacy environments, you can load d3-chord’s UMD bundle from an npm-based CDN such as jsDelivr; a `d3` global is exported:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/d3-path@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-chord@3"></script>
 <script>
 
-var chord = d3.chord();
+const chord = d3.chord();
 
 </script>
 ```
@@ -29,7 +41,7 @@ Constructs a new chord layout with the default settings.
 Computes the chord layout for the specified square *matrix* of size *n*×*n*, where the *matrix* represents the directed flow amongst a network (a complete digraph) of *n* nodes. The given *matrix* must be an array of length *n*, where each element *matrix*[*i*] is an array of *n* numbers, where each *matrix*[*i*][*j*] represents the flow from the *i*th node in the network to the *j*th node. Each number *matrix*[*i*][*j*] must be nonnegative, though it can be zero if there is no flow from node *i* to node *j*. From the [Circos tableviewer example](http://mkweb.bcgsc.ca/circos/guide/tables/):
 
 ```js
-var matrix = [
+const matrix = [
   [11975,  5871, 8916, 2868],
   [ 1951, 10048, 2060, 6171],
   [ 8010, 16145, 8090, 8045],
@@ -93,7 +105,7 @@ Creates a new ribbon generator with the default settings.
 Generates a ribbon for the given *arguments*. The *arguments* are arbitrary; they are simply propagated to the ribbon generator’s accessor functions along with the `this` object. For example, with the default settings, a [chord object](#_chord) expected:
 
 ```js
-var ribbon = d3.ribbon();
+const ribbon = d3.ribbon();
 
 ribbon({
   source: {startAngle: 0.7524114, endAngle: 1.1212972, radius: 240},
@@ -104,7 +116,7 @@ ribbon({
 Or equivalently if the radius is instead defined as a constant:
 
 ```js
-var ribbon = d3.ribbon()
+const ribbon = d3.ribbon()
     .radius(240);
 
 ribbon({

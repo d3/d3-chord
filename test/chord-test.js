@@ -1,5 +1,5 @@
 import assert from "assert";
-import * as d3 from "../src/index.js";
+import {chord} from "../src/index.js";
 import {assertInDelta} from "./asserts.js";
 
 // From http://mkweb.bcgsc.ca/circos/guide/tables/
@@ -10,13 +10,13 @@ const matrix = [
   [ 1013,   990,  940, 6907]
 ];
 
-it("d3.chord() has the expected defaults", () => {
-  const chord = d3.chord();
-  assert.strictEqual(chord.padAngle(), 0);
-  assert.strictEqual(chord.sortGroups(), null);
-  assert.strictEqual(chord.sortSubgroups(), null);
-  assert.strictEqual(chord.sortChords(), null);
-  const chords = chord(matrix);
+it("chord() has the expected defaults", () => {
+  const c = chord();
+  assert.strictEqual(c.padAngle(), 0);
+  assert.strictEqual(c.sortGroups(), null);
+  assert.strictEqual(c.sortSubgroups(), null);
+  assert.strictEqual(c.sortChords(), null);
+  const chords = c(matrix);
   assertInDelta(chords.groups, [
     {index: 0, startAngle: 0.0000000, endAngle: 1.8617078, value: 29630},
     {index: 1, startAngle: 1.8617078, endAngle: 3.1327961, value: 20230},
@@ -59,10 +59,10 @@ it("d3.chord() has the expected defaults", () => {
 });
 
 it("chord.padAngle(angle) sets the pad angle", () => {
-  const chord = d3.chord().sortSubgroups(function(a, b) { return b - a; });
-  assert.strictEqual(chord.padAngle(0.05), chord);
-  assert.strictEqual(chord.padAngle(), 0.05);
-  const chords = chord(matrix);
+  const c = chord().sortSubgroups(function(a, b) { return b - a; });
+  assert.strictEqual(c.padAngle(0.05), c);
+  assert.strictEqual(c.padAngle(), 0.05);
+  const chords = c(matrix);
   assertInDelta(chords.groups, [
     {index: 0, startAngle: 0.0000000, endAngle: 1.80244780, value: 29630},
     {index: 1, startAngle: 1.8524478, endAngle: 3.08307619, value: 20230},

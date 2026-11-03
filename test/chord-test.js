@@ -1,3 +1,4 @@
+import {test} from "vitest";
 import assert from "assert";
 import {chord} from "../src/index.js";
 import {assertInDelta} from "./asserts.js";
@@ -10,7 +11,7 @@ const matrix = [
   [ 1013,   990,  940, 6907]
 ];
 
-it("chord() has the expected defaults", () => {
+test("chord() has the expected defaults", () => {
   const c = chord();
   assert.strictEqual(c.padAngle(), 0);
   assert.strictEqual(c.sortGroups(), null);
@@ -58,7 +59,7 @@ it("chord() has the expected defaults", () => {
   ]);
 });
 
-it("chord.padAngle(angle) sets the pad angle", () => {
+test("chord.padAngle(angle) sets the pad angle", () => {
   const c = chord().sortSubgroups(function(a, b) { return b - a; });
   assert.strictEqual(c.padAngle(0.05), c);
   assert.strictEqual(c.padAngle(), 0.05);

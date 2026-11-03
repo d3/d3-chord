@@ -1,7 +1,8 @@
+import {test} from "vitest";
 import assert from "assert";
 import {ribbon} from "../src/index.js";
 
-it("ribbon() has the expected defaults", () => {
+test("ribbon() has the expected defaults", () => {
   const r = ribbon();
   assert.strictEqual(r.radius()({radius: 42}), 42);
   assert.strictEqual(r.startAngle()({startAngle: 42}), 42);
@@ -11,7 +12,7 @@ it("ribbon() has the expected defaults", () => {
   assert.strictEqual(r.context(), null);
 });
 
-it("ribbon.radius(radius) sets the radius accessor", () => {
+test("ribbon.radius(radius) sets the radius accessor", () => {
   const foo = d => d.foo;
   const r = ribbon();
   assert.strictEqual(r.radius(foo), r);
@@ -20,7 +21,7 @@ it("ribbon.radius(radius) sets the radius accessor", () => {
   assert.strictEqual(r.radius()(), 42);
 });
 
-it("ribbon.startAngle(startAngle) sets the startAngle accessor", () => {
+test("ribbon.startAngle(startAngle) sets the startAngle accessor", () => {
   const foo = d => d.foo;
   const r = ribbon();
   assert.strictEqual(r.startAngle(foo), r);
@@ -29,7 +30,7 @@ it("ribbon.startAngle(startAngle) sets the startAngle accessor", () => {
   assert.strictEqual(r.startAngle()(), 1.2);
 });
 
-it("ribbon.endAngle(endAngle) sets the endAngle accessor", () => {
+test("ribbon.endAngle(endAngle) sets the endAngle accessor", () => {
   const foo = d => d.foo;
   const r = ribbon();
   assert.strictEqual(r.endAngle(foo), r);
@@ -38,14 +39,14 @@ it("ribbon.endAngle(endAngle) sets the endAngle accessor", () => {
   assert.strictEqual(r.endAngle()(), 1.2);
 });
 
-it("ribbon.source(source) sets the source accessor", () => {
+test("ribbon.source(source) sets the source accessor", () => {
   const foo = d => d.foo;
   const r = ribbon();
   assert.strictEqual(r.source(foo), r);
   assert.strictEqual(r.source(), foo);
 });
 
-it("ribbon.target(target) sets the target accessor", () => {
+test("ribbon.target(target) sets the target accessor", () => {
   const foo = d => d.foo;
   const r = ribbon();
   assert.strictEqual(r.target(foo), r);

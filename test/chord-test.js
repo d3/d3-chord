@@ -1,5 +1,6 @@
-import assert from "assert";
-import {chord} from "../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {chord} from "d3-chord";
 import {assertInDelta} from "./asserts.js";
 
 // From http://mkweb.bcgsc.ca/circos/guide/tables/

@@ -1,5 +1,6 @@
-import assert from "assert";
-import {ribbon} from "../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {ribbon} from "d3-chord";
 
 it("ribbon() has the expected defaults", () => {
   const r = ribbon();

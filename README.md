@@ -7,6 +7,6 @@ Chord diagrams visualize relationships or network flow between a set of nodes in
 ## Resources
 
 - [Documentation](https://d3js.org/d3-chord)
-- [Examples](https://observablehq.com/collection/@d3/d3-chord)
+- [Examples](https://observablehq.com/@d3/-/collection/d3-chord)
 - [Releases](https://github.com/d3/d3-chord/releases)
 - [Getting help](https://d3js.org/community)

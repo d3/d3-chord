@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 
 export function assertInDelta(actual, expected, delta) {
   delta = delta || 1e-6;
